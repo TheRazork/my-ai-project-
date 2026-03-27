@@ -1,19 +1,17 @@
-# Базовый образ с Python 3.12
 FROM python:3.12-slim
 
-# Устанавливаем Pygame и необходимые библиотеки для графики
+# Установка системных зависимостей для pygame
 RUN apt-get update && apt-get install -y \
-    python3-pygame \
-    libgl1-mesa-glx \
-    libegl1 \
-    libopengl0 \
+    libsdl2-2.0-0 \
+    libsdl2-image-2.0-0 \
+    libsdl2-mixer-2.0-0 \
+    libsdl2-ttf-2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
-# Указываем рабочую директорию внутри контейнера
-WORKDIR /app
+# Установка pygame через pip (это гарантирует последнюю версию)
+RUN pip install pygame
 
-# Копируем все файлы проекта в контейнер
+WORKDIR /app
 COPY . .
 
-# Команда, которая запускается при старте контейнера
 CMD ["python", "flappy.py"]
